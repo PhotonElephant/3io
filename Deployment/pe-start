@@ -1,0 +1,23 @@
+ #! /bin/sh
+# /etc/init.d/pe-start
+
+case "$1" in
+  start)
+    echo "*********************PE DEPLOY START"
+    python /home/pi/3io/Deployment/update_pe.py
+    echo " *************** DONE DEPLOYING ************* "
+    python /home/pi/3io/Deployment/crash_report.py &
+    echo "DEPLOYED   ***************************"
+    ;;
+  stop)
+    echo "Stopping example"
+    # kill application you want to stop
+    killall python
+    ;;
+  *)
+    echo "Usage: /etc/init.d/example{start|stop}"
+    exit 1
+    ;;
+esac
+
+exit 0

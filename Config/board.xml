@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<!-- Raspberry Pi Printer Configuration file        -->
+<!-- Created 8-16-2014 Brant Merryman               -->
+<!-- Defines our microstepping raspberry Pi printer -->
+
+
+
+<configuraiton>
+	<pins>
+
+	<!-- These two are common to all motors. -->
+	<pin kind="microstepper_reset" type="gpio" direction="out" name="2"/>
+	<pin kind="microstepper_sleep" type="gpio" direction="out" name="3"/>
+	<pin kind="fan" type="gpio" direction="out" name="16"/>
+
+		
+        <pin kind="microstepper_step" type="gpio" direction="out" name="17"/>
+        <pin kind="microstepper_direction" type="gpio" direction="out" name="18"/>
+		
+	<pin kind="microstepper_step" type="gpio" direction="out" name="27"/>
+        <pin kind="microstepper_direction" type="gpio" direction="out" name="22"/>
+		
+	<pin kind="microstepper_step" type="gpio" direction="out" name="23"/>
+        <pin kind="microstepper_direction" type="gpio" direction="out" name="24"/>
+
+        <pin kind="microstepper_step" type="gpio" direction="out" name="25"/>
+        <pin kind="microstepper_direction" type="gpio" direction="out" name="4"/>
+
+        <spi>
+            <device class="adc" device="/dev/spidev0.0" type="mcp3008" name="adc1" speed="1000000" mode="SPI_MODE_0" bitsPerWord="8">
+                <inputs>
+                    <pin_def index="1" type="adc_temp" direction="in" description="src/main/native/NTC100K" fixed_resistance="4600" name="adc1.ch1"/>
+                </inputs>
+            </device>
+        </spi>
+	</pins>
+	
+	<printer>
+    	<axis name="x" type="x" steps_per_millimeter="80" max_speed_mm_per_sec="500">
+	        <microstepper name="microstepper_x">
+	            <pin kind="microstepper_step" type="gpio" direction="out" name="17"/>
+	            <pin kind="microstepper_direction" type="gpio" direction="out" name="18"/>
+				<pin kind="microstepper_reset" type="gpio" direction="out" name="2"/>
+	        </microstepper>
+	    </axis>
+    	<axis name="y" type="y" steps_per_millimeter="80" max_speed_mm_per_sec="500">
+	        <microstepper name="microstepper_y">
+	            <pin kind="microstepper_step" type="gpio" direction="out" name="27"/>
+	            <pin kind="microstepper_direction" type="gpio" direction="out" name="22"/>
+				<pin kind="microstepper_reset" type="gpio" direction="out" name="2"/>
+	        </microstepper>
+	    </axis>
+		<axis name="z" type="z" steps_per_millimeter="2900" max_speed_mm_per_sec="5">
+	        <microstepper name="microstepper_z">
+	            <pin kind="microstepper_step" type="gpio" direction="out" name="23"/>
+	            <pin kind="microstepper_direction" type="gpio" direction="out" name="24"/>
+				<pin kind="microstepper_reset" type="gpio" direction="out" name="2"/>
+	        </microstepper>
+	    </axis>
+		<extruder steps_per_millimeter="1200" filament_width="1.75" name="e0" max_speed_mm_per_sec="25">  
+			<microstepper name="microstepper_e0">
+	            <pin kind="microstepper_step" type="gpio" direction="out" name="25"/>
+	            <pin kind="microstepper_direction" type="gpio" direction="out" name="4"/>
+				<pin kind="microstepper_reset" type="gpio" direction="out" name="2"/>
+			</microstepper>
+			<temperature_controller name="temp_control_e0">
+                <pin type="adc_temp" name="adc1.ch1" direction="in"/>
+				<heater name="heater_en0">
+					<pin kind="heater" type="gpio" direction="out" name="15"/>
+				</heater>
+			</temperature_controller>
+		</extruder>
+		<fan_controller name="default_fan">
+			<pin kind="fan" type="gpio" direction="out" name="16"/>
+		</fan_controller>
+		<acceleration_profile name="xy">
+			<jerk>20</jerk>
+			<axes>
+				<axis>x</axis>
+				<axis>y</axis>
+			</axes>
+		</acceleration_profile>
+		<acceleration_profile name="z">
+			<jerk>.4</jerk>
+			<axes>
+				<axis>z</axis>
+				<axis>y</axis>
+			</axes>
+		</acceleration_profile>
+		<acceleration_profile name="e">
+			<jerk>5</jerk>
+			<axes>
+				<axis>z</axis>
+				<axis>y</axis>
+			</axes>
+		</acceleration_profile>
+	</printer>
+</configuraiton>
