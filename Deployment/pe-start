@@ -6,7 +6,7 @@ case "$1" in
     echo "*********************PE DEPLOY START"
     python /home/pi/3io/Deployment/update_pe.py
     echo " *************** DONE DEPLOYING ************* "
-    python /home/pi/3io/Deployment/crash_report.py &
+    python /home/pi/3io/Deployment/run_pe.py &
     echo "DEPLOYED   ***************************"
     ;;
   stop)
